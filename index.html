@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>אלה בית קפה ופטיסרי — מאפים, לחמים ועוגות</title>
+<!-- PREVIEW ONLY — remove this robots tag before the site goes live on the real domain. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="אלה בית קפה ופטיסרי בפארק תעשיות עמק חפר. מאפים, לחמים, עוגות, סלטים ומגשי אירוח — טרי, כשר ומוכן במקום.">
+<link rel="icon" href="https://www.ella-patisserie.co.il/wp-content/uploads/2020/09/LOGO-clear.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ===== tokens — DESIGN.md §2, confirmed against the live site ===== */
+:root{
+  --cream:#FFFBF3; --cream-card:#FFFFFF; --sand:#F6EEE0; --sand-deep:#EFE2CE;
+  --line:#E7D9C4; --photo-bg:#EADCC6;
+  --cocoa:#6A3C1C; --cocoa-dark:#522D12; --gold:#D6AF42; --gold-deep:#B8902E;
+  --ink:#5C392C; --ink-deep:#503C2A; --ink-soft:#6B4A3A; --ink-mute:#755443; --ink-faint:#C9AA93;
+  --on-dark:#FFFBF3; --on-dark-mute:#E6D6C4;
+  --scrim:linear-gradient(to top, rgba(40,24,15,.82), rgba(40,24,15,0));
+  --scrim-hero:linear-gradient(to left, rgba(40,24,15,.93) 0%, rgba(40,24,15,.86) 30%,
+                              rgba(40,24,15,.66) 58%, rgba(40,24,15,.34) 100%);
+  --r-pill:999px; --r-card:22px; --r-tile:24px; --r-panel-lg:32px;
+  --arch-up:240px 240px 28px 28px;
+  --shadow-hero:0 30px 70px -30px rgba(59,35,23,.45);
+  --font-sans:Heebo,"Helvetica Neue",Arial,sans-serif;
+  --wrap:1240px; --pad:24px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--ink-soft);
+  font:400 17px/1.75 var(--font-sans);text-wrap:pretty;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:#6B3A1E;text-decoration:none}
+a:hover{color:var(--cocoa-dark)}
+h1,h2,h3{color:var(--ink);margin:0;text-wrap:pretty}
+p{margin:0}
+:focus-visible{outline:2px solid var(--cocoa);outline-offset:2px;border-radius:4px}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--pad)}
+.sec{padding-block:82px}
+.sec--sand{background:var(--sand)}
+.skip{position:absolute;inset-inline-start:-9999px}
+.skip:focus{position:fixed;top:10px;inset-inline-start:10px;z-index:99;
+  background:var(--cream-card);padding:10px 16px;border-radius:var(--r-pill)}
+
+/* ===== buttons ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font:700 16px/1 var(--font-sans);border:0;border-radius:var(--r-pill);
+  padding:16px 32px;background:var(--cocoa);color:var(--on-dark);cursor:pointer;
+  transition:background .15s ease,color .15s ease;min-height:44px;text-align:center}
+.btn:hover{background:var(--cocoa-dark);color:var(--on-dark)}
+.btn-sm{padding:11px 18px;font-size:14px;min-height:40px}
+.btn-ghost{background:transparent;color:var(--cocoa);border:1px solid #C9A87E}
+.btn-ghost:hover{background:var(--sand);color:var(--cocoa-dark)}
+.btn-on-dark{background:var(--cream);color:var(--ink)}
+.btn-on-dark:hover{background:var(--sand-deep);color:var(--ink)}
+.btn-on-dark-o{background:transparent;color:var(--on-dark);border:1px solid rgba(255,251,243,.5)}
+.btn-on-dark-o:hover{background:rgba(255,251,243,.12);color:var(--on-dark)}
+
+/* ===== header ===== */
+.hdr{position:sticky;top:0;z-index:50;background:rgba(255,251,243,.92);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hdr-in{display:flex;align-items:center;gap:14px 24px;flex-wrap:wrap;padding-block:12px}
+.brand{display:flex;align-items:center;flex:0 0 auto}
+.brand img{height:54px;width:auto}
+.nav{display:flex;flex-wrap:wrap;align-items:center;gap:2px 22px;flex:1 1 320px}
+.nav a{font:500 15px/1 var(--font-sans);color:var(--ink);padding:10px 2px;
+  border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+.nav a:hover,.nav a[aria-current]{color:var(--cocoa);border-bottom-color:var(--gold)}
+.hdr-act{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:0 0 auto}
+.cart{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);
+  background:var(--cream-card);border-radius:var(--r-pill);padding:9px 16px;
+  font:700 14px/1 var(--font-sans);color:var(--ink);cursor:pointer;min-height:40px;
+  transition:background .15s ease}
+.cart:hover{background:var(--sand)}
+.cart b{background:var(--cocoa);color:var(--on-dark);border-radius:var(--r-pill);
+  min-width:20px;height:20px;display:grid;place-items:center;font-size:12px;padding-inline:6px}
+.nav-tog{display:none;align-items:center;gap:8px;border:1px solid var(--line);
+  background:var(--cream-card);border-radius:var(--r-pill);padding:9px 16px;
+  font:700 14px/1 var(--font-sans);color:var(--ink);cursor:pointer;min-height:40px}
+.nav-tog:hover{background:var(--sand)}
+.nav-tog span{display:block;width:16px;height:2px;background:var(--ink);position:relative}
+.nav-tog span::before,.nav-tog span::after{content:"";position:absolute;inset-inline:0;
+  height:2px;background:var(--ink)}
+.nav-tog span::before{top:-5px} .nav-tog span::after{top:5px}
+
+/* below 900px the full nav is taller than the phone — collapse it behind a toggle */
+@media (max-width:900px){
+  .hdr-in{gap:10px 12px}
+  .brand img{height:44px}
+  .nav-tog{display:inline-flex;order:2}
+  .hdr-act{order:3;margin-inline-start:auto}
+  .hdr-act .btn{display:none}          /* the hero already carries the primary CTA */
+  .cart{padding:9px 14px}
+  .nav{order:4;flex:1 1 100%;display:none;flex-direction:column;align-items:stretch;
+    gap:0;border-top:1px solid var(--line);margin-top:4px;padding-top:4px}
+  .nav.open{display:flex}
+  .nav a{padding:13px 2px;border-bottom:1px solid var(--line);border-radius:0}
+  .nav a:last-child{border-bottom:0}
+  .nav a:hover,.nav a[aria-current]{border-bottom-color:var(--line)}
+}
+
+/* ===== hero — DESIGN.md §6 ===== */
+.hero{position:relative;min-height:clamp(520px,74vh,760px);display:grid;
+  align-items:center;background:var(--ink-deep);isolation:isolate}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.hero::after{content:"";position:absolute;inset:0;background:var(--scrim-hero);z-index:-1}
+.hero-in{padding-block:96px;width:100%}
+.hero-c{max-width:640px;animation:riseIn .7s ease both}
+.hero h1{color:var(--on-dark);font-weight:900;letter-spacing:-.02em;line-height:.98;
+  font-size:clamp(40px,6.4vw,78px);margin-bottom:20px}
+.hero-sub{color:var(--on-dark-mute);font:500 clamp(19px,2.2vw,26px)/1.3 var(--font-sans);
+  max-width:34ch;margin-bottom:34px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px}
+/* narrow screens: the sideways scrim has no room, so bed the text from the bottom */
+@media (max-width:760px){
+  .hero{--scrim-hero:linear-gradient(to top, rgba(40,24,15,.94) 0%, rgba(40,24,15,.84) 38%,
+                                     rgba(40,24,15,.62) 68%, rgba(40,24,15,.42) 100%);
+    align-items:end}
+  .hero-in{padding-block:120px 64px}
+}
+@keyframes riseIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.hero-c{animation:none}}
+
+/* ===== info strip ===== */
+.strip{background:var(--ink-deep);color:var(--on-dark-mute);
+  font:500 15px/1.6 var(--font-sans);text-align:center;padding:16px var(--pad)}
+.strip b{color:var(--gold);font-weight:700}
+.strip i{font-style:normal;color:rgba(255,251,243,.4);padding-inline:12px}
+
+/* ===== typographic trust band (no icons — DESIGN.md §0) ===== */
+.trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px 36px;
+  border-block:1px solid var(--line);padding-block:38px}
+
+/* ===== vertical video — phones only; desktop keeps the trust band instead ===== */
+.band{padding-block:0}
+.vid-fr{display:none;width:min(100%,380px);margin-inline:auto;aspect-ratio:9/16;
+  border-radius:var(--r-panel-lg);overflow:hidden;background:var(--ink-deep);
+  box-shadow:var(--shadow-hero)}
+.vid-fr video{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:760px){
+  .band{padding-block:54px}
+  .vid-fr{display:block}
+  .trust{display:none}
+}
+.trust div{border-inline-start:2px solid var(--gold);padding-inline-start:16px}
+.trust b{display:block;font:700 17px/1.35 var(--font-sans);color:var(--ink)}
+.trust i{font-style:normal;font-size:15px;color:var(--ink-mute);line-height:1.6}
+
+/* ===== section heads ===== */
+.head{margin-bottom:44px;max-width:56ch}
+.h2{font-weight:900;letter-spacing:-.015em;line-height:1.1;font-size:clamp(28px,3.6vw,46px)}
+.head p{margin-top:16px;color:var(--ink-mute);max-width:52ch}
+.head--c{max-width:none;text-align:center}
+.head--c p{margin-inline:auto}
+
+/* ===== category tiles ===== */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.tile{position:relative;display:block;border-radius:var(--r-tile);overflow:hidden;
+  background:var(--photo-bg);aspect-ratio:4/5;border:1px solid var(--line)}
+.tile img{width:100%;height:100%;object-fit:cover;transition:opacity .15s ease}
+.tile:hover img{opacity:.94}
+.tile-cap{position:absolute;inset-inline:0;bottom:0;padding:22px 20px;
+  background:var(--scrim);color:var(--on-dark)}
+.tile-cap b{display:block;font:900 22px/1.2 var(--font-sans);letter-spacing:-.01em}
+.tile-cap i{font-style:normal;display:block;margin-top:4px;
+  font:500 14px/1.5 var(--font-sans);color:var(--on-dark-mute)}
+
+/* ===== product cards — photo-led (DESIGN.md §6) ===== */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.card{display:flex;flex-direction:column;background:var(--cream-card);
+  border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden}
+.card-ph{display:block;aspect-ratio:1/1;background:var(--photo-bg)}
+.card-ph img{width:100%;height:100%;object-fit:cover;transition:opacity .15s ease}
+.card-ph:hover img{opacity:.94}
+.card-b{display:flex;flex-direction:column;gap:8px;padding:18px;flex:1}
+.badge{align-self:flex-start;background:var(--gold);color:var(--ink);
+  border-radius:var(--r-pill);padding:5px 12px;font:700 12px/1 var(--font-sans);letter-spacing:.04em}
+.card-t{font:700 19px/1.35 var(--font-sans)}
+.card-t a{color:var(--ink)}
+.card-t a:hover{color:var(--cocoa)}
+.card-d{font:400 14px/1.65 var(--font-sans);color:var(--ink-mute)}
+.card-f{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  flex-wrap:wrap;margin-top:auto;padding-top:10px}
+.price{font:900 22px/1 var(--font-sans);color:var(--cocoa)}
+.more{margin-top:44px;display:flex;justify-content:center}
+
+/* ===== dark feature block ===== */
+.feat{background:var(--ink-deep);color:var(--on-dark-mute)}
+.feat-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:48px;align-items:center;padding-block:84px}
+.feat h2{color:var(--on-dark);font-weight:900;letter-spacing:-.02em;line-height:1.1;
+  font-size:clamp(28px,4vw,52px);margin-bottom:20px}
+.feat p{max-width:50ch;margin-bottom:30px}
+.feat-cta{display:flex;flex-wrap:wrap;gap:14px}
+.feat-ph{border-radius:var(--r-panel-lg);overflow:hidden;background:var(--photo-bg);
+  aspect-ratio:4/3;box-shadow:var(--shadow-hero)}
+.feat-ph img{width:100%;height:100%;object-fit:cover}
+
+/* ===== about ===== */
+.about{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:48px;align-items:center}
+.about-ph{border-radius:var(--arch-up);overflow:hidden;background:var(--photo-bg);
+  aspect-ratio:4/4.6;box-shadow:var(--shadow-hero)}
+.about-ph img{width:100%;height:100%;object-fit:cover}
+.about-tx p{max-width:52ch;margin-bottom:14px}
+.about-tx p:last-of-type{margin-bottom:0}
+.about-tx .h2{margin-bottom:22px}
+.lead{font-size:19px;color:var(--ink-soft)}
+.tlink{display:inline-block;margin-top:26px;font:700 16px/1 var(--font-sans);
+  color:var(--cocoa);border-bottom:1px solid #C9A87E;padding-bottom:3px}
+.tlink:hover{color:var(--cocoa-dark);border-bottom-color:var(--gold)}
+
+/* ===== footer ===== */
+.ft{background:var(--ink-deep);color:var(--on-dark-mute);padding-top:64px}
+.ft-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:36px}
+.ft h3{color:var(--on-dark);font:700 15px/1 var(--font-sans);letter-spacing:.08em;margin-bottom:18px}
+.ft-word{font:900 34px/1 var(--font-sans);color:var(--on-dark);letter-spacing:-.02em}
+.ft-word span{display:block;font:500 14px/1.5 var(--font-sans);color:var(--gold);
+  letter-spacing:.1em;margin-top:10px}
+.ft ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:15px}
+.ft a{color:var(--on-dark-mute)}
+.ft a:hover{color:var(--gold)}
+.ft-note{font-size:15px;color:var(--on-dark-mute);margin-top:12px;line-height:1.7}
+.ft-bot{margin-top:52px;border-top:1px solid rgba(255,251,243,.16);padding-block:22px;
+  display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;
+  font:400 13px/1.6 var(--font-sans);color:var(--ink-faint)}
+.ft-bot a{color:var(--ink-faint)}
+.ft-bot nav{display:flex;flex-wrap:wrap;gap:10px 20px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">דילוג לתוכן</a>
+
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="#" aria-label="אלה בית קפה ופטיסרי — לדף הבית">
+      <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2020/09/LOGO-clear.png" alt="אלה בית קפה ופטיסרי">
+    </a>
+    <button class="nav-tog" type="button" aria-expanded="false" aria-controls="nav">
+      <span></span>תפריט
+    </button>
+    <nav class="nav" id="nav" aria-label="ניווט ראשי">
+      <a href="#" aria-current="page">דף הבית</a>
+      <a href="#about">אודות</a>
+      <a href="#shop">חנות המוצרים</a>
+      <a href="#cats">מגשי אירוח</a>
+      <a href="#">אירועים בפטיסרי</a>
+      <a href="#rosh">ראש השנה</a>
+      <a href="#contact">צרו קשר</a>
+    </nav>
+    <div class="hdr-act">
+      <button class="cart" type="button">עגלת קניות <b>0</b></button>
+      <a class="btn btn-sm" href="#shop">להזמנה</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <img class="hero-img" src="https://www.ella-patisserie.co.il/wp-content/uploads/2026/08/B-25-scaled.jpg"
+         alt="שולחן אירוח של אלה פטיסרי עמוס בקישים, סלטים וכריכים טריים" fetchpriority="high">
+    <div class="wrap hero-in">
+      <div class="hero-c">
+        <h1>מאפים. לחמים.<br>עוגות.</h1>
+        <p class="hero-sub">טרי. כשר. מוכן במקום — כל בוקר מחדש.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#shop">להזמנה מהחנות</a>
+          <a class="btn btn-on-dark-o" href="#cats">מגשי אירוח</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p class="strip">המקום כשר<i>·</i>ימים א׳–ו׳ · <b>08:00–15:00</b><i>·</i>שבת סגור</p>
+
+  <section class="band" id="video">
+    <div class="wrap">
+      <div class="vid-fr">
+        <video playsinline muted loop controls preload="none"
+               poster="https://www.ella-patisserie.co.il/wp-content/uploads/2026/08/B-11-1024x683.jpg"
+               aria-label="סרטון מהפטיסרי של אלה">
+          <!-- .mp4 is the target; the .mov below is the current file and is
+               declared as video/mp4 on purpose — Chrome refuses the
+               video/quicktime MIME but decodes the H.264/AAC streams inside. -->
+          <source src="ella-patisserie.mp4" type="video/mp4">
+          <source src="ella-patisserie.mov" type="video/mp4">
+          הדפדפן שלך אינו תומך בהצגת וידאו.
+        </video>
+      </div>
+      <div class="trust">
+        <div><b>נאפה במקום</b><i>כל בוקר, מהתנור שלנו לדלפק</i></div>
+        <div><b>המקום כשר</b><i>חלבי, בהשגחה</i></div>
+        <div><b>מגשי אירוח</b><i>למשרדים, חברות ואירועים</i></div>
+        <div><b>10 שנים</b><i>בפארק תעשיות עמק חפר</i></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="cats">
+    <div class="wrap">
+      <div class="head">
+        <h2 class="h2">המאפים, הלחמים והסלטים<br>המשובחים שלנו</h2>
+        <p>הכול נאפה ומוכן אצלנו במקום מחומרי גלם טריים — ממאפה בוקר אחד ועד מגש אירוח לכל המשרד.</p>
+      </div>
+      <div class="tiles">
+        <a class="tile" href="#">
+          <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2026/05/%D7%9E%D7%99%D7%A0%D7%99-%D7%9B%D7%A8%D7%99%D7%9B%D7%99-%D7%9E%D7%95%D7%A6%D7%A8%D7%9C%D7%94-%D7%A2%D7%92%D7%91%D7%A0%D7%99%D7%94-scaled.jpeg" alt="מגשי אירוח" loading="lazy">
+          <span class="tile-cap"><b>מגשי אירוח</b><i>למשרדים ולאירועים</i></span>
+        </a>
+        <a class="tile" href="#">
+          <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2020/10/%D7%91%D7%A8%D7%99%D7%95%D7%A9-%D7%A7%D7%A8%D7%9D-%D7%A4%D7%98%D7%99%D7%A1%D7%99%D7%99%D7%A8-%D7%95%D7%A4%D7%98%D7%9C.jpg" alt="מאפי בוקר" loading="lazy">
+          <span class="tile-cap"><b>מאפי בוקר</b><i>מלוחים ומתוקים</i></span>
+        </a>
+        <a class="tile" href="#">
+          <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2020/10/%D7%98%D7%90%D7%A8%D7%98-%D7%9C%D7%99%D7%9E%D7%95%D7%9F-1.jpg" alt="עוגות ועוגיות" loading="lazy">
+          <span class="tile-cap"><b>עוגות ועוגיות</b><i>טארטים ועוגות פס</i></span>
+        </a>
+        <a class="tile" href="#">
+          <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2024/12/yarok-salad-rgb.jpg" alt="סלטים ומטבלים" loading="lazy">
+          <span class="tile-cap"><b>סלטים ומטבלים</b><i>טריים כל בוקר</i></span>
+        </a>
+        <a class="tile" href="#">
+          <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2020/10/%D7%A7%D7%99%D7%A9-%D7%A4%D7%98%D7%A8%D7%99%D7%95%D7%AA.jpeg" alt="קישים" loading="lazy">
+          <span class="tile-cap"><b>קישים</b><i>אישי ורינג 22</i></span>
+        </a>
+        <a class="tile" href="#">
+          <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2021/04/%D7%97%D7%9C%D7%AA%D7%91%D7%A8%D7%99%D7%95%D7%A9-1.jpeg" alt="לחמים" loading="lazy">
+          <span class="tile-cap"><b>לחמים</b><i>כוסמין ושיפון מלא</i></span>
+        </a>
+        <a class="tile" href="#">
+          <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2020/12/%D7%9E%D7%90%D7%A8%D7%96-%D7%91%D7%A8%D7%90%D7%A0%D7%A5-%D7%9E%D7%A9%D7%A4%D7%97%D7%AA%D7%99.jpeg" alt="מארזים" loading="lazy">
+          <span class="tile-cap"><b>מארזים</b><i>מתנה שנעים לקבל</i></span>
+        </a>
+        <a class="tile" href="#">
+          <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2020/10/%D7%A4%D7%90%D7%93%D7%92-%D7%A9%D7%95%D7%A7%D7%95%D7%9C%D7%93-%D7%9C%D7%9C%D7%90-%D7%92%D7%9C%D7%95%D7%98%D7%9F.jpg" alt="ללא קמח" loading="lazy">
+          <span class="tile-cap"><b>ללא קמח</b><i>בלי להתפשר על טעם</i></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="feat" id="rosh">
+    <div class="wrap feat-in">
+      <div>
+        <h2>פותחים את השנה החדשה<br>עם הרמת כוסית שכולם יזכרו</h2>
+        <p>לכבוד ראש השנה הכנו מגשי אירוח חגיגיים, עשירים וייחודיים למשרדים, חברות וארגונים — עם מאפים וקינוחים בעבודת יד, כריכים, סלטים והמון תשומת לב לכל פרט.</p>
+        <div class="feat-cta">
+          <a class="btn btn-on-dark" href="#">ראש השנה לעסקים</a>
+          <a class="btn btn-on-dark-o" href="#">ראש השנה פרטיים</a>
+        </div>
+      </div>
+      <div class="feat-ph">
+        <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2026/05/%D7%9E%D7%99%D7%A0%D7%99-%D7%91%D7%A8%D7%99%D7%95%D7%A9-%D7%97%D7%9E%D7%90%D7%94-%D7%A8%D7%99%D7%91%D7%AA-%D7%AA%D7%95%D7%AA-%D7%A4%D7%98%D7%9C-scaled.jpeg" alt="מגש מיני בריוש עם ריבת תות ופטל לראש השנה" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--sand" id="shop">
+    <div class="wrap">
+      <div class="head head--c">
+        <h2 class="h2">המוצרים הנמכרים ביותר</h2>
+        <p>מה שיוצא מהתנור ונגמר ראשון. הזמינו לאיסוף מהפטיסרי או למשלוח לאירוע.</p>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <a class="card-ph" href="#" aria-label="מארז בראנץ">
+            <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2020/11/%D7%9E%D7%90%D7%A8%D7%96-%D7%91%D7%A8%D7%90%D7%A0%D7%96.png" alt="מארז בראנץ" loading="lazy">
+          </a>
+          <div class="card-b">
+            <span class="badge">הנמכר ביותר</span><h3 class="card-t"><a href="#">מארז בראנץ</a></h3>
+            <p class="card-d">מאפים, סלט, מטבלים ומתוק — ארוז ומוכן לשולחן.</p>
+            <div class="card-f">
+              <span class="price"><span dir="ltr">₪165.00</span></span>
+              <button class="btn btn-sm" type="button">הוספה לסל</button>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <a class="card-ph" href="#" aria-label="מאפה פוקצה עם עלי גפן וגבינות">
+            <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2024/12/fhucatza-rgb.jpg" alt="מאפה פוקצה עם עלי גפן וגבינות" loading="lazy">
+          </a>
+          <div class="card-b">
+            <h3 class="card-t"><a href="#">מאפה פוקצה עם עלי גפן וגבינות</a></h3>
+            <p class="card-d">עלי גפן טריים או חובזה טרייה, על בצק פוקצה אפוי במקום.</p>
+            <div class="card-f">
+              <span class="price"><span dir="ltr">₪36.00</span></span>
+              <button class="btn btn-sm" type="button">הוספה לסל</button>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <a class="card-ph" href="#" aria-label="בריוש מלוח פלפלים, עגבניות וזיתים">
+            <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2020/10/%D7%91%D7%A8%D7%99%D7%95%D7%A9-%D7%9E%D7%9C%D7%95%D7%97-%D7%A2%D7%9D-%D7%A4%D7%9C%D7%A4%D7%9C%D7%99%D7%9D-%D7%A2%D7%92%D7%91%D7%A0%D7%99%D7%95%D7%AA-%D7%96%D7%99%D7%99%D7%AA%D7%99%D7%9D-%D7%A9%D7%97%D7%95%D7%A8%D7%99%D7%9D-%D7%95%D7%A4%D7%98%D7%94.jpg" alt="בריוש מלוח פלפלים, עגבניות וזיתים" loading="lazy">
+          </a>
+          <div class="card-b">
+            <h3 class="card-t"><a href="#">בריוש מלוח פלפלים, עגבניות וזיתים</a></h3>
+            <p class="card-d">בצק בריוש חמאה עם פלפלים, עגבניות, זיתי קלמטה ופטה.</p>
+            <div class="card-f">
+              <span class="price"><span dir="ltr">₪36.00</span></span>
+              <button class="btn btn-sm" type="button">הוספה לסל</button>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <a class="card-ph" href="#" aria-label="בריוש פטיסייר ופטל">
+            <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2020/10/%D7%91%D7%A8%D7%99%D7%95%D7%A9-%D7%A7%D7%A8%D7%9D-%D7%A4%D7%98%D7%99%D7%A1%D7%99%D7%99%D7%A8-%D7%95%D7%A4%D7%98%D7%9C.jpg" alt="בריוש פטיסייר ופטל" loading="lazy">
+          </a>
+          <div class="card-b">
+            <h3 class="card-t"><a href="#">בריוש פטיסייר ופטל</a></h3>
+            <p class="card-d">קרם פטיסייר עשיר ופטל טרי על בצק בריוש.</p>
+            <div class="card-f">
+              <span class="price"><span dir="ltr">₪36.00</span></span>
+              <button class="btn btn-sm" type="button">הוספה לסל</button>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <a class="card-ph" href="#" aria-label="מאפה בריוש סלק, פטה ואגוזי מלך">
+            <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2020/10/%D7%9E%D7%90%D7%A4%D7%94-%D7%91%D7%A8%D7%99%D7%95%D7%A9-%D7%90%D7%99%D7%A9%D7%99-%D7%A2%D7%9D-%D7%A1%D7%9C%D7%A7-%D7%A4%D7%98%D7%94-%D7%95%D7%90%D7%92%D7%95%D7%96%D7%99-%D7%9E%D7%9C%D7%9A.jpg" alt="מאפה בריוש סלק, פטה ואגוזי מלך" loading="lazy">
+          </a>
+          <div class="card-b">
+            <h3 class="card-t"><a href="#">מאפה בריוש סלק, פטה ואגוזי מלך</a></h3>
+            <p class="card-d">סלק צלוי, פטה ואגוזי מלך — מאפה אישי.</p>
+            <div class="card-f">
+              <span class="price"><span dir="ltr">₪36.00</span></span>
+              <button class="btn btn-sm" type="button">הוספה לסל</button>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <a class="card-ph" href="#" aria-label="בריוש שוקולד">
+            <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2020/10/%D7%91%D7%A8%D7%99%D7%95%D7%A9-%D7%A9%D7%95%D7%A7%D7%95%D7%9C%D7%93-1.jpg" alt="בריוש שוקולד" loading="lazy">
+          </a>
+          <div class="card-b">
+            <h3 class="card-t"><a href="#">בריוש שוקולד</a></h3>
+            <p class="card-d">עוגת שמרים במילוי שוקולד, לחיתוך בשולחן.</p>
+            <div class="card-f">
+              <span class="price"><span dir="ltr">₪65.00</span></span>
+              <button class="btn btn-sm" type="button">הוספה לסל</button>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <a class="card-ph" href="#" aria-label="מאפה בצק עלים גבינות ומנגולד">
+            <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2020/10/%D7%9E%D7%90%D7%A4%D7%94-%D7%91%D7%A6%D7%A7-%D7%A2%D7%9C%D7%99%D7%9D-%D7%92%D7%91%D7%99%D7%A0%D7%95%D7%AA-%D7%95%D7%9E%D7%A0%D7%92%D7%95%D7%9C%D7%93.jpg" alt="מאפה בצק עלים גבינות ומנגולד" loading="lazy">
+          </a>
+          <div class="card-b">
+            <h3 class="card-t"><a href="#">מאפה בצק עלים גבינות ומנגולד</a></h3>
+            <p class="card-d">בצק עלים פריך במילוי גבינות ומנגולד.</p>
+            <div class="card-f">
+              <span class="price"><span dir="ltr">₪45.00</span></span>
+              <button class="btn btn-sm" type="button">הוספה לסל</button>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <a class="card-ph" href="#" aria-label="דניש קינמון, אגוזי לוז וקרמל מלוח">
+            <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2020/10/%D7%93%D7%A0%D7%99%D7%A9-%D7%A7%D7%99%D7%A0%D7%9E%D7%95%D7%9F-%D7%90%D7%92%D7%95%D7%96%D7%99-%D7%9C%D7%95%D7%96-%D7%95%D7%A7%D7%A8%D7%9E%D7%9C.jpg" alt="דניש קינמון, אגוזי לוז וקרמל מלוח" loading="lazy">
+          </a>
+          <div class="card-b">
+            <h3 class="card-t"><a href="#">דניש קינמון, אגוזי לוז וקרמל מלוח</a></h3>
+            <p class="card-d">דניש קינמון עם אגוזי לוז וקרמל מלוח.</p>
+            <div class="card-f">
+              <span class="price"><span dir="ltr">₪28.00</span></span>
+              <button class="btn btn-sm" type="button">הוספה לסל</button>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="more"><a class="btn btn-ghost" href="#">לכל המוצרים בחנות</a></div>
+    </div>
+  </section>
+
+  <section class="sec" id="about">
+    <div class="wrap about">
+      <div class="about-ph">
+        <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2023/12/WhatsApp-Image-2023-12-05-at-14.24.55_139f6fea-768x1024.jpg" alt="סופגניות סברינה עם קצפת ותותים על דלפק הפטיסרי" loading="lazy">
+      </div>
+      <div class="about-tx">
+        <h2 class="h2">סיפורינו מתחיל<br>בחלום שהתגשם</h2>
+        <p class="lead">מאז היותה נערה צעירה חלמה אלה בוימל גורן לפתוח מקום בו תוכל להכין מאפים, אוכל משובח ולשמח אנשים. לפני 10 שנים פתחה את הפטיסרי, ומאז היא מאושרת.</p>
+        <p>כשנכנסים לפטיסרי שלנו מרגישים ״קפיצה קטנה לחו״ל״ — ריח מאפים טריים באוויר, שנסונים בצרפתית ברקע, אהבה ושמחה באוויר.</p>
+        <p>בחצר בית הקפה צומחות גפנים המשתרגות ויוצרות סוכה נעימה לישיבה בגינה. הצוות המיומן ישמח להכין עבורכם קפה משובח לצד המאפים והסלטים שתבחרו.</p>
+        <a class="tlink" href="#">קראו את הסיפור המלא</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="ft" id="contact">
+  <div class="wrap">
+    <div class="ft-g">
+      <div>
+        <p class="ft-word">אלה<span>בית קפה ופטיסרי</span></p>
+        <p class="ft-note">מאפים. לחמים. עוגות.<br>טרי. כשר. מוכן במקום.</p>
+      </div>
+      <div>
+        <h3>כתובתנו</h3>
+        <p class="ft-note">דרך נחל אלכסנדר 5<br>פארק תעשיות עמק חפר<br>(בתוך תחנת הדלק סונול)</p>
+      </div>
+      <div>
+        <h3>שעות פתיחה</h3>
+        <p class="ft-note">ימים א׳–ו׳ · 08:00–15:00<br>שבת סגור<br>המקום כשר</p>
+      </div>
+      <div>
+        <h3>צרו קשר</h3>
+        <ul>
+          <li><a href="tel:+97246546155" dir="ltr">04-654-6155</a></li>
+          <li><a href="https://wa.me/972505916161" dir="ltr">050-591-6161</a> — הודעות בלבד</li>
+          <li><a href="mailto:Catering.ella@gmail.com" dir="ltr">Catering.ella@gmail.com</a></li>
+          <li>אירועים ושיתופי פעולה — יונתן<br><a href="tel:+972548037797" dir="ltr">054-803-7797</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <p>© 2026 אלה בית קפה ופטיסרי. כל הזכויות שמורות.</p>
+      <nav aria-label="קישורים משניים">
+        <a href="#">שאלות ותשובות</a>
+        <a href="#">תעודת כשרות</a>
+        <a href="#">הצהרת נגישות</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var tog = document.querySelector('.nav-tog');
+    var nav = document.getElementById('nav');
+    tog.addEventListener('click', function () {
+      var open = nav.classList.toggle('open');
+      tog.setAttribute('aria-expanded', String(open));
+    });
+    nav.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        nav.classList.remove('open');
+        tog.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+</script>
+</body>
+</html>
