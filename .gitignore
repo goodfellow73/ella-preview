@@ -1,2 +1,6 @@
 .claude/
 *.crdownload
+
+# Pending decision — the pale-blue trial (#B8D9E2). Kept local until it is
+# accepted or dropped; see "Open experiment" in DESIGN.md.
+index-blue.html

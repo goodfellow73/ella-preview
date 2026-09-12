@@ -9,7 +9,7 @@ Full page-by-page build order + copy: `BUILD-SPEC.md`.
 
 ## 0. Design style — read this first
 
-**Editorial bakery.** Heavy black Heebo headlines at near-poster scale, one cocoa ink, one cream ground, photography cropped into **arches**. The page should feel like a printed bakery broadsheet that happens to sell online — calm, confident, warm, a little old-world.
+**Editorial bakery.** Heavy black Heebo headlines at near-poster scale, one cocoa ink, one cream ground, photography in **plain squares and rectangles** — the crop never decorates. The page should feel like a printed bakery broadsheet that happens to sell online — calm, confident, warm, a little old-world.
 
 Non-negotiables:
 
@@ -20,12 +20,12 @@ Non-negotiables:
 - **A section heading stands alone.** No kicker, eyebrow, or small label above it — the H2 is the first thing in the block. Break it across lines with explicit `<br>` where the meaning breaks, and let scale alone carry the hierarchy.
 - **The hero H1 is the one exception, and only because the brand line lives *inside* it.** `אלה בית קפה ופטיסרי` is set in weight 300 as a `<span>` on the first line of the H1, with the 900 tagline under it — one heading, two weights. That is a change of weight within a title, not a label stacked above one; a separate `<p>` above the H1 would be the banned pattern.
 - **The hero is a full-bleed photograph with the headline set over it** — not a two-column text/photo split. It is the one place the page goes edge-to-edge.
-- Arch photo crops are the identity. They survive in the about section only — exactly the two defined radii, nowhere else.
+- **Photographs are not given decorative crops.** The arch crops this system used to carry are gone: the about image is a hard-cornered square, product cards are squares, tiles are gently rounded rectangles. If a photo needs a shape to be interesting, the photo is the problem.
 - **Product cards lead with the product photo.** A card without a real photograph is not shippable.
 
 Explicitly banned (these are what make a bakery site look generic):
 
-- Script/handwriting fonts, emoji, hearts, whisk/cupcake icon sets, hand-drawn SVG doodles.
+- Script/handwriting fonts, emoji, hearts, whisk/cupcake icon sets, hand-drawn SVG doodles. **One icon exists in the whole design** — the cart basket (§6) — and it is a control affordance, not decoration. The ban is on iconography that illustrates the *food*; a glyph that tells you which button buys something is doing a different job.
 - Blush-pink pastel palettes, soft-focus AI food renders, pink kitchen props.
 - Icon-row "features" strips (ours is typographic — label + sub, no icons).
 - Kicker / eyebrow labels above a heading (`התפריט שלנו`, `בפארק תעשיות עמק חפר`, `בחנות`) and the little gold rule that went with them.
@@ -68,7 +68,14 @@ Weights in use: `300` the hero brand line, `400` body, `500` nav + hero sub-line
 | Pill, badge | 12–13px | 700 | `0.04em` | — |
 | Footer legal | 13px | 400 | — | — |
 
-Rules: nothing under 13px. Body copy capped at `46–56ch`. `text-wrap: pretty` on every heading and paragraph. Headlines break where meaning breaks — use explicit `<br>` in the hero and dark CTA, not luck.
+Rules: nothing under 13px. Body copy capped at `46–56ch`. `text-wrap: pretty` on paragraphs, `text-wrap: balance` on every heading.
+
+**Line breaks in headings — check them at 320px, not just on a laptop.** A hard `<br>` is a decision taken at one width and it does not travel. Two failures to watch for, both of which shipped here before being caught:
+
+1. *The stranded word.* A `<br>` plus natural wrapping gives three lines where the middle one holds two words. Fix by making the break's own line fit: the `@media (max-width:760px)` floor of `clamp(22px, 7vw, 33px)` exists precisely so `המאפים, הלחמים והסלטים` still fits its measure at 320px. Change that heading's wording and you must re-check the floor.
+2. *Short line, then long line.* Balance alone will not always fix this — Chrome left `סיפורינו מתחיל בחלום / שהתגשם` at 260/116 when 185/198 was available. A hard break that reads long-then-short beats a balanced one that reads short-then-long.
+
+So: keep the `<br>` where it also works on a phone (`about`, `cats`, the hero's three-item list), and give it `class="bp"` — hidden under 760px — where it only works on a desktop (`ראש השנה`). Measure, don't eyeball: walk the heading's text nodes with a `Range` and group the client rects by `top` to get the real lines and their widths.
 
 ---
 
@@ -144,6 +151,23 @@ The hero headline sits on a photograph, so its contrast comes from `--scrim-hero
 
 ---
 
+### 2a. Open experiment — the pale blue (NOT adopted)
+
+`index-blue.html` trials `#B8D9E2`, a powder blue already present in the live site's stylesheet, on the two mid-page blocks that are currently `--ink-deep`: the hours strip and the ראש השנה block. It is an **alternate file, not a variant of the system** — `index.html` is unchanged and remains the reference. The whole experiment is one commented CSS block appended after the main stylesheet; deleting that block restores the original exactly.
+
+The thing to know if it gets adopted: **this blue is light** (relative luminance 0.653), so it inverts the meaning of a "dark block". Measured on `#B8D9E2`:
+
+| Foreground | Ratio | |
+|---|---|---|
+| `--ink` `#5C392C` | 6.77 | ✅ |
+| `--cocoa` `#6A3C1C` | 6.18 | ✅ |
+| `--ink-soft` `#6B4A3A` | 5.27 | ✅ |
+| `--ink-mute` `#755443` | 4.53 | ✅ (only just) |
+| `--gold` `#D6AF42` | 1.40 | ❌ |
+| `--on-dark` `#FFFBF3` | 1.45 | ❌ |
+
+So on blue, every `--on-dark` foreground flips to the brown inks and **gold cannot appear at all** — not as text, not as the eyebrow rule. `.btn-on-dark` inverts too: cocoa fill with cream text instead of cream fill with ink text. The footer stays `--ink-deep` on purpose; if the strip, the block *and* the footer all went blue the page would have no dark anchor left.
+
 ## 3. Language & direction (Hebrew)
 
 - `<html lang="he" dir="rtl">`. Layout is mirrored; logical properties everywhere (`margin-inline-start`, `padding-inline`, `inset-inline`) — no `left`/`right`.
@@ -163,17 +187,18 @@ The hero headline sits on a photograph, so its contrast comes from `--scrim-hero
 --r-panel: 28px;   /* large panels */
 --r-panel-lg: 32px;
 
-/* Signature arches — the identity. Use only these two, only on hero + about. */
---arch-down: 28px 28px 240px 240px;   /* hero image, aspect 4/3.4 */
---arch-up:   240px 240px 28px 28px;   /* about image, aspect 4/4.6 */
-
 --shadow-hero: 0 30px 70px -30px rgba(59,35,23,0.45);
 --shadow-float: 0 18px 40px -22px rgba(59,35,23,0.4); /* the floating price card */
 ```
 
 Those two shadows are the only ones in the system. Cards, tiles, header, footer: `1px solid var(--line)`.
 
-Motion: hover transitions ≤150ms, on `background`/`opacity`/`color` only. Tile hover is `opacity:.94` and nothing else. One entrance animation exists — the hero text column:
+Motion: hover transitions ≤150ms, on `background`/`opacity`/`color` only. Tile hover is `opacity:.94` and nothing else. Two named exceptions animate `transform`:
+
+- **The cart basket** — `220ms cubic-bezier(.34,1.42,.64,1)`, a 2px hop and a 7° tip on hover and keyboard focus, settling on `:active`. The overshoot in that curve is the whole point; a linear tween reads mechanical.
+- **The phone video** — plays and pauses itself on scroll (§6).
+
+Both are disabled under `prefers-reduced-motion`, as is the one entrance animation — the hero text column:
 
 ```css
 @keyframes riseIn { from { opacity:0; transform: translateY(14px) } to { opacity:1; transform:none } }
@@ -187,6 +212,7 @@ No scroll-triggered reveals, no parallax, no marquees.
 ## 5. Layout
 
 - Content width `1240px`; inline padding `24px`; section padding `80–84px` block.
+- **Vertical padding does not stack.** Where a full-bleed band sits directly above a `.sec`, give the band `padding-block: … 0` and let the section's own top padding make the whole gap. The video band and `#cats` were briefly `54 + 82 = 136px` apart for exactly this reason.
 - **Every** multi-column block: `grid-template-columns: repeat(auto-fit, minmax(<min>, 1fr))` + `gap`. No media queries, no fixed widths, no `white-space: nowrap` on text boxes.
 - **Exactly two media queries exist**, and neither touches a content grid — the grids stay `auto-fit`. Do not add a third without a reason as concrete as these:
   1. `max-width: 900px` — the seven-item nav wraps to three rows on a phone and eats ~60% of the viewport, so it collapses behind a `תפריט` toggle (see §6). The header's primary CTA is hidden here; the hero already carries it.
@@ -203,6 +229,7 @@ No scroll-triggered reveals, no parallax, no marquees.
 | Product cards | `230px` | `20px` |
 | Trust band, footer | `220px` | `18–36px` |
 
+- Every `auto-fit` minimum is wrapped in `min()`: `minmax(min(300px,100%), 1fr)`. A bare `minmax(300px,1fr)` forces a track wider than a 320px phone's content box and silently clips it, because `body` carries `overflow-x:hidden`.
 - Sibling spacing is always `gap` — never per-element margins (survives drag-reorder and deletion).
 - Cards use `display:flex; flex-direction:column` with the price/CTA row on `margin-top:auto`, so ragged titles still align across a row.
 - Sticky header: `rgba(251,245,236,0.92)` + `backdrop-filter: blur(10px)` + bottom hairline. Nav and the cart/CTA cluster both `flex-wrap: wrap`.
@@ -215,17 +242,17 @@ No scroll-triggered reveals, no parallax, no marquees.
 - **Pill / badge** — `--sand-deep` bg + cocoa text, 12–13px/700. Cocoa fill + cream text for seasonal labels.
 - **Text link** — 15–16px/700 with `border-bottom: 1px solid #C9A87E; padding-bottom:3px`. This replaces "read more" buttons.
 - **Photo tile** — radius `--r-tile`, `--photo-bg` behind, `object-fit:cover`, caption absolutely positioned bottom over `--scrim`, 20–26px/900 in `--on-dark`.
-- **Hero** — full-bleed `<section>`, min-height `clamp(520px, 74vh, 760px)`, photo `object-fit:cover` behind `--scrim-hero` (darkest at the inline-start/right edge so the RTL text column lands on the dark side). Content is a single column capped at `640px`, aligned to the inline-start edge of the `1240px` container: H1 (light brand line + heavy tagline) → one sub-line. **No buttons in the hero** — the photograph and the name carry it, and the header's `להזמנה` pill is the standing call to action. This replaces the old two-column arch hero.
+- **Hero** — full-bleed `<section>`, min-height `clamp(520px, 74vh, 760px)`, photo `object-fit:cover` behind `--scrim-hero` (darkest at the inline-start/right edge so the RTL text column lands on the dark side). Content is a single column capped at `640px`, aligned to the inline-start edge of the `1240px` container: H1 (light brand line + heavy tagline) → one sub-line. **No buttons in the hero** — the photograph and the name carry it, and the header's `להזמנה` pill is the standing call to action.
 - **Mobile nav toggle** — a pill matching the cart (`1px --line`, `--cream-card`, 14px/700) holding a 3-bar glyph + the word `תפריט`; appears only under 900px. It drives `aria-expanded` on the button and `.open` on the `<nav>`; the open panel is a full-width column of 44px-tall rows separated by `--line` hairlines, and it closes itself when a link inside is clicked. This is the only scripted component on the page.
 - **Product card** — `--cream-card`, 1px `--line`, `--r-card`, `overflow:hidden`; **photo first**: `aspect-ratio:1/1` — always square, identical across every card in a row, cropping the source as needed via `object-fit:cover`, `--photo-bg` behind, full card width and flush to the top corners (no inset). Body below gets 18px padding and `gap:8px`: optional badge, title, one-line description, then the bottom row on `margin-top:auto` = price + `הוספה לסל`. Photo hover `opacity:.94` only — the card itself does not lift, scale or shadow.
-- **Vertical video** — a 9:16 frame, `--r-panel-lg`, `--shadow-hero`, `--ink-deep` behind, `width: min(100%, 380px)` and centred; the `<video>` fills it with `object-fit:cover`. It and the trust band occupy the same slot in the page and **swap at 760px**: the phone gets the video and no trust band, the desktop gets the trust band and no video. A vertical clip is a phone format — full-bleed on a 375px screen it is the best thing on the page, and beside a 1240px column it is a stamp. Always `playsinline` and `muted`; `controls` + `preload="none"` while the file is heavy, switching to `autoplay loop` (still muted, still `playsinline`) only once it is under ~4MB. Give it a real `poster` — a frame from the clip itself, never an unrelated product shot — and an `aria-label` describing the clip.
-- **Cart** — pill in the header with a cocoa count bubble. It carries two labels, `עגלת קניות` and a short `סל`, and swaps to the short one under 560px so the header stays on one row; the `aria-label` keeps the full name for screen readers either way. It reveals a bar under the header showing item count and `סה״כ ₪X`. Empty: `העגלה ריקה — הוסיפו מאפה טרי`. Count text pluralizes (`פריט אחד בעגלה` / `N פריטים בעגלה`).
+- **Vertical video** — a 9:16 frame, `--r-panel-lg`, `--shadow-hero`, `--ink-deep` behind, `width: min(100%, 380px)` and centred; the `<video>` fills it with `object-fit:cover`. It and the trust band occupy the same slot in the page and **swap at 760px**: the phone gets the video and no trust band, the desktop gets the trust band and no video. A vertical clip is a phone format — full-bleed on a 375px screen it is the best thing on the page, and beside a 1240px column it is a stamp. Always `playsinline` and `muted` — those two are what make autoplay permissible on iOS and Android at all. It carries `loop`, `controls` and `preload="metadata"`, and an `IntersectionObserver` at `threshold: 0.35` starts it when it scrolls into view and pauses it the moment it leaves, so it never runs unseen. Skip the observer under `prefers-reduced-motion`; the controls still let someone start it. Note what this commits a phone to: the clip downloads as soon as it is scrolled to, so its weight matters more here than it would behind a tap. Give it a real `poster` — a frame from the clip itself, never an unrelated product shot — and an `aria-label` describing the clip.
+- **Cart** — pill in the header holding, in order: an 18px inline-SVG basket (`stroke: currentColor`, `stroke-width: 1.7`, no fill, `aria-hidden`), the label, then a cocoa count bubble. The SVG is inline so it inherits colour and costs no request; `transform-origin: 50% 70%` puts the pivot at the basket's base so the tip reads as a lift, not a spin. It carries two labels, `עגלת קניות` and a short `סל`, and swaps to the short one under 560px so the header stays on one row; the `aria-label` keeps the full name for screen readers either way. It reveals a bar under the header showing item count and `סה״כ ₪X`. Empty: `העגלה ריקה — הוסיפו מאפה טרי`. Count text pluralizes (`פריט אחד בעגלה` / `N פריטים בעגלה`).
 
 ## 7. Imagery
 
-Natural light, cream and wood surfaces, product off-center with headroom at the top so the arch crop never clips it. No dark moody stock, no pink props, no AI-looking renders. Never hand-draw food as SVG — use a striped placeholder with a monospace label until the real shot exists.
+Natural light, cream and wood surfaces. Leave headroom at the top of the frame so a square crop never clips the subject. No dark moody stock, no pink props, no AI-looking renders. Never hand-draw food as SVG — use a striped placeholder with a monospace label until the real shot exists.
 
-Needed at 2x: hero — one wide `16/9` or wider shot of a laid table or counter with usable negative space on the **right** (RTL text side); ראש השנה `4/3`, מגשי אירוח `16/9`, seven category crops at `4/5`, product shots at `1/1` (square — see §6), about `4/4.6` (place/people, not product), logo as transparent PNG + SVG.
+Needed at 2x: hero — one wide `16/9` or wider shot of a laid table or counter with usable negative space on the **right** (RTL text side); ראש השנה `4/3`, מגשי אירוח `16/9`, seven category crops at `4/5`, product shots at `1/1` (square — see §6), about `1/1`, square corners, no radius (place/people, **not** product — the counter, the room, the light), logo as transparent PNG + SVG.
 
 **Video.** Shoot and keep it vertical `9:16` — it earns its place on the phone, where a landscape clip would waste the column. Ship `.mp4` (H.264 + AAC). A `.mov` holding the same streams **does** play in Chrome — tested over HTTP, `readyState` 4 and playback advancing — even though `canPlayType('video/quicktime')` returns `''`; that method is conservative, not authoritative. But the server must then send it and Firefox still refuses the container, so `.mov` is a fallback, not a target. When both are listed, put the `.mp4` `<source>` first and declare the `.mov` fallback as `type="video/mp4"` — Chrome skips a source labelled `video/quicktime` without trying it. Budget ≤4MB for an ambient autoplay loop and ≤10MB for a click-to-play clip; a 26-second phone capture straight off the camera is ~48MB (≈14.6 Mbps) and must be compressed before it goes near a page. Remuxing `.mov` → `.mp4` needs no re-encode when the codecs are already H.264/AAC. Current placeholders pull from the live WordPress uploads — see the table in `BUILD-SPEC.md`.
 

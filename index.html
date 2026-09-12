@@ -23,7 +23,6 @@
   --scrim-hero:linear-gradient(to left, rgba(40,24,15,.93) 0%, rgba(40,24,15,.86) 30%,
                               rgba(40,24,15,.66) 58%, rgba(40,24,15,.34) 100%);
   --r-pill:999px; --r-card:22px; --r-tile:24px; --r-panel-lg:32px;
-  --arch-up:240px 240px 28px 28px;
   --shadow-hero:0 30px 70px -30px rgba(59,35,23,.45);
   --font-sans:Heebo,"Helvetica Neue",Arial,sans-serif;
   --wrap:1240px; --pad:24px;
@@ -76,6 +75,17 @@ p{margin:0}
   transition:background .15s ease}
 .cart:hover{background:var(--sand)}
 .cart-short{display:none}
+.cart svg{width:18px;height:18px;flex:0 0 auto;stroke:currentColor;fill:none;
+  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
+  transform-origin:50% 70%;
+  transition:transform .22s cubic-bezier(.34,1.42,.64,1)}
+/* the basket gives a small hop and tips back, as if just picked up */
+.cart:hover svg,.cart:focus-visible svg{transform:translateY(-2px) rotate(-7deg)}
+.cart:active svg{transform:translateY(0) rotate(-3deg);transition-duration:.1s}
+@media (prefers-reduced-motion:reduce){
+  .cart svg{transition:none}
+  .cart:hover svg,.cart:focus-visible svg,.cart:active svg{transform:none}
+}
 .cart b{background:var(--cocoa);color:var(--on-dark);border-radius:var(--r-pill);
   min-width:20px;height:20px;display:grid;place-items:center;font-size:12px;padding-inline:6px}
 .nav-tog{display:none;align-items:center;gap:8px;border:1px solid var(--line);
@@ -95,6 +105,12 @@ p{margin:0}
   .hdr-act{order:3;margin-inline-start:auto}
   .hdr-act .btn{display:none}          /* the header CTA is not worth a second row */
   .cart{padding:9px 14px}
+  .nav{order:4;flex:1 1 100%;display:none;flex-direction:column;align-items:stretch;
+    gap:0;border-top:1px solid var(--line);margin-top:4px;padding-top:4px}
+  .nav.open{display:flex}
+  .nav a{padding:13px 2px;border-bottom:1px solid var(--line);border-radius:0}
+  .nav a:last-child{border-bottom:0}
+  .nav a:hover,.nav a[aria-current]{border-bottom-color:var(--line)}
 }
 /* narrow phones: logo, toggle and cart must still fit one row, so the cart
    drops to its short label — "עגלת קניות" is what pushes it over at 360px */
@@ -105,12 +121,6 @@ p{margin:0}
   .nav-tog{padding:9px 13px;gap:7px}
   .cart-long{display:none}
   .cart-short{display:inline}
-  .nav{order:4;flex:1 1 100%;display:none;flex-direction:column;align-items:stretch;
-    gap:0;border-top:1px solid var(--line);margin-top:4px;padding-top:4px}
-  .nav.open{display:flex}
-  .nav a{padding:13px 2px;border-bottom:1px solid var(--line);border-radius:0}
-  .nav a:last-child{border-bottom:0}
-  .nav a:hover,.nav a[aria-current]{border-bottom-color:var(--line)}
 }
 
 /* ===== hero — DESIGN.md §6 ===== */
@@ -121,7 +131,7 @@ p{margin:0}
 .hero-in{padding-block:96px;width:100%}
 .hero-c{max-width:640px;animation:riseIn .7s ease both}
 .hero h1{color:var(--on-dark);font-weight:900;letter-spacing:-.02em;line-height:.98;
-  font-size:clamp(40px,6.4vw,78px);margin-bottom:20px}
+  font-size:clamp(40px,6.4vw,78px);margin-bottom:20px;text-wrap:balance}
 .hero-brand{display:block;font-weight:300;letter-spacing:.02em;line-height:1.25;
   font-size:clamp(27px,3.6vw,42px);color:var(--on-dark);margin-bottom:14px}
 .hero-sub{color:var(--on-dark-mute);font:500 clamp(19px,2.2vw,26px)/1.3 var(--font-sans);
@@ -143,7 +153,7 @@ p{margin:0}
 .strip i{font-style:normal;color:rgba(255,251,243,.4);padding-inline:12px}
 
 /* ===== typographic trust band (no icons — DESIGN.md §0) ===== */
-.trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px 36px;
+.trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:22px 36px;
   border-block:1px solid var(--line);padding-block:38px}
 
 /* ===== vertical video — phones only; desktop keeps the trust band instead ===== */
@@ -153,7 +163,8 @@ p{margin:0}
   box-shadow:var(--shadow-hero)}
 .vid-fr video{width:100%;height:100%;object-fit:cover;display:block}
 @media (max-width:760px){
-  .band{padding-block:54px}
+  .band{padding-block:44px 0}
+  .bp{display:none}   /* desktop-tuned breaks orphan a word at phone widths */
   .vid-fr{display:block}
   .trust{display:none}
 }
@@ -163,13 +174,14 @@ p{margin:0}
 
 /* ===== section heads ===== */
 .head{margin-bottom:44px;max-width:56ch}
-.h2{font-weight:900;letter-spacing:-.015em;line-height:1.1;font-size:clamp(28px,3.6vw,46px)}
+.h2{font-weight:900;letter-spacing:-.015em;line-height:1.1;font-size:clamp(28px,3.6vw,46px);
+  text-wrap:balance}
 .head p{margin-top:16px;color:var(--ink-mute);max-width:52ch}
 .head--c{max-width:none;text-align:center}
 .head--c p{margin-inline:auto}
 
 /* ===== category tiles ===== */
-.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:22px}
 .tile{position:relative;display:block;border-radius:var(--r-tile);overflow:hidden;
   background:var(--photo-bg);aspect-ratio:4/5;border:1px solid var(--line)}
 .tile img{width:100%;height:100%;object-fit:cover;transition:opacity .15s ease}
@@ -181,7 +193,7 @@ p{margin:0}
   font:500 14px/1.5 var(--font-sans);color:var(--on-dark-mute)}
 
 /* ===== product cards — photo-led (DESIGN.md §6) ===== */
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:20px}
 .card{display:flex;flex-direction:column;background:var(--cream-card);
   border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden}
 .card-ph{display:block;aspect-ratio:1/1;background:var(--photo-bg)}
@@ -201,10 +213,10 @@ p{margin:0}
 
 /* ===== dark feature block ===== */
 .feat{background:var(--ink-deep);color:var(--on-dark-mute)}
-.feat-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+.feat-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));
   gap:48px;align-items:center;padding-block:84px}
 .feat h2{color:var(--on-dark);font-weight:900;letter-spacing:-.02em;line-height:1.1;
-  font-size:clamp(28px,4vw,52px);margin-bottom:20px}
+  font-size:clamp(28px,4vw,52px);margin-bottom:20px;text-wrap:balance}
 .feat p{max-width:50ch;margin-bottom:30px}
 .feat-cta{display:flex;flex-wrap:wrap;gap:14px}
 .feat-ph{border-radius:var(--r-panel-lg);overflow:hidden;background:var(--photo-bg);
@@ -212,10 +224,10 @@ p{margin:0}
 .feat-ph img{width:100%;height:100%;object-fit:cover}
 
 /* ===== about ===== */
-.about{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+.about{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));
   gap:48px;align-items:center}
-.about-ph{border-radius:var(--arch-up);overflow:hidden;background:var(--photo-bg);
-  aspect-ratio:4/4.6;box-shadow:var(--shadow-hero)}
+.about-ph{overflow:hidden;background:var(--photo-bg);
+  aspect-ratio:1/1;box-shadow:var(--shadow-hero)}
 .about-ph img{width:100%;height:100%;object-fit:cover}
 .about-tx p{max-width:52ch;margin-bottom:14px}
 .about-tx p:last-of-type{margin-bottom:0}
@@ -227,7 +239,7 @@ p{margin:0}
 
 /* ===== footer ===== */
 .ft{background:var(--ink-deep);color:var(--on-dark-mute);padding-top:64px}
-.ft-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:36px}
+.ft-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:36px}
 .ft h3{color:var(--on-dark);font:700 15px/1 var(--font-sans);letter-spacing:.08em;margin-bottom:18px}
 .ft-word{font:900 34px/1 var(--font-sans);color:var(--on-dark);letter-spacing:-.02em}
 .ft-word span{display:block;font:500 14px/1.5 var(--font-sans);color:var(--gold);
@@ -241,6 +253,17 @@ p{margin:0}
   font:400 13px/1.6 var(--font-sans);color:var(--ink-faint)}
 .ft-bot a{color:var(--ink-faint)}
 .ft-bot nav{display:flex;flex-wrap:wrap;gap:10px 20px}
+
+/* ===== phone typography, last so it wins on source order =====
+   Section headings ease down on a phone so a line fills its measure
+   instead of stranding two or three words on a line of its own. */
+@media (max-width:760px){
+  /* The floor is set by the longest heading line that carries a hard break:
+     "המאפים, הלחמים והסלטים" must fit the measure at 320px, or it wraps and
+     strands a word. 7vw keeps the size climbing quickly above that. */
+  .h2{font-size:clamp(22px,7vw,33px)}
+  .feat h2{font-size:clamp(24px,7vw,35px)}
+}
 </style>
 </head>
 <body>
@@ -265,7 +288,11 @@ p{margin:0}
     </nav>
     <div class="hdr-act">
       <button class="cart" type="button" aria-label="עגלת קניות">
-        <span class="cart-long">עגלת קניות</span><span class="cart-short">סל</span> <b>0</b>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M9 3 6.4 8.2M15 3l2.6 5.2"/>
+          <path d="M3.4 8.2h17.2l-1.5 9.5a2.3 2.3 0 0 1-2.3 1.9H7.2a2.3 2.3 0 0 1-2.3-1.9L3.4 8.2Z"/>
+          <path d="M9.6 12.1v3.6M14.4 12.1v3.6"/>
+        </svg><span class="cart-long">עגלת קניות</span><span class="cart-short">סל</span> <b>0</b>
       </button>
       <a class="btn btn-sm" href="#shop">להזמנה</a>
     </div>
@@ -290,7 +317,7 @@ p{margin:0}
   <section class="band" id="video">
     <div class="wrap">
       <div class="vid-fr">
-        <video playsinline muted loop controls preload="none"
+        <video playsinline muted loop controls preload="metadata"
                poster="https://www.ella-patisserie.co.il/wp-content/uploads/2026/08/B-11-1024x683.jpg"
                aria-label="סרטון מהפטיסרי של אלה">
           <!-- .mp4 is the target; the .mov below is the current file and is
@@ -356,7 +383,7 @@ p{margin:0}
   <section class="feat" id="rosh">
     <div class="wrap feat-in">
       <div>
-        <h2>פותחים את השנה החדשה<br>עם הרמת כוסית שכולם יזכרו</h2>
+        <h2>פותחים את השנה החדשה<br class="bp">עם הרמת כוסית שכולם יזכרו</h2>
         <p>לכבוד ראש השנה הכנו מגשי אירוח חגיגיים, עשירים וייחודיים למשרדים, חברות וארגונים — עם מאפים וקינוחים בעבודת יד, כריכים, סלטים והמון תשומת לב לכל פרט.</p>
         <div class="feat-cta">
           <a class="btn btn-on-dark" href="#">ראש השנה לעסקים</a>
@@ -373,7 +400,6 @@ p{margin:0}
     <div class="wrap">
       <div class="head head--c">
         <h2 class="h2">המוצרים הנמכרים ביותר</h2>
-        <p>מה שיוצא מהתנור ונגמר ראשון. הזמינו לאיסוף מהפטיסרי או למשלוח לאירוע.</p>
       </div>
       <div class="cards">
         <article class="card">
@@ -488,7 +514,7 @@ p{margin:0}
   <section class="sec" id="about">
     <div class="wrap about">
       <div class="about-ph">
-        <img src="https://www.ella-patisserie.co.il/wp-content/uploads/2023/12/WhatsApp-Image-2023-12-05-at-14.24.55_139f6fea-768x1024.jpg" alt="סופגניות סברינה עם קצפת ותותים על דלפק הפטיסרי" loading="lazy">
+        <img src="about-patisserie.jpg" alt="דלפק הפטיסרי של אלה — סלטים, עוגות ופרחים מול חלון הגינה" loading="lazy">
       </div>
       <div class="about-tx">
         <h2 class="h2">סיפורינו מתחיל<br>בחלום שהתגשם</h2>
@@ -546,6 +572,24 @@ p{margin:0}
       var open = nav.classList.toggle('open');
       tog.setAttribute('aria-expanded', String(open));
     });
+    // The clip plays while it is on screen and stops the moment it leaves,
+    // so nothing keeps running in the background. Muted + playsinline are
+    // what make autoplay permissible on iOS and Android.
+    var vid = document.querySelector('.vid-fr video');
+    var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (vid && 'IntersectionObserver' in window && !calm.matches) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var p = vid.play();
+            if (p && p.catch) { p.catch(function () {}); }
+          } else if (!vid.paused) {
+            vid.pause();
+          }
+        });
+      }, { threshold: 0.35 }).observe(vid);
+    }
+
     nav.addEventListener('click', function (e) {
       if (e.target.tagName === 'A') {
         nav.classList.remove('open');
