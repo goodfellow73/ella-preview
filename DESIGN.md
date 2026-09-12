@@ -58,7 +58,7 @@ Weights in use: `300` the hero brand line, `400` body, `500` nav + hero sub-line
 | Hero H1 | `clamp(40px, 6.4vw, 78px)` | 900 | `-0.02em` | `0.98` |
 | Section H2 | `clamp(28px, 3.6vw, 46px)` | 900 | `-0.015em` | `1.1` |
 | Dark-block H2 | `clamp(28px, 4vw, 52px)` | 900 | `-0.02em` | `1.1` |
-| Hero brand line (inside H1) | `clamp(21px, 2.7vw, 32px)` | 300 | `0.02em` | `1.3` |
+| Hero brand line (inside H1) | `clamp(27px, 3.6vw, 42px)` | 300 | `0.02em` | `1.25` |
 | Hero sub-line | `clamp(19px, 2.2vw, 26px)` | 500 | — | `1.3` |
 | Card title | 19–20px | 700 | — | `1.35` |
 | Price | 22px (20px in hero card) | 900 | — | — |
@@ -191,6 +191,9 @@ No scroll-triggered reveals, no parallax, no marquees.
 - **Exactly two media queries exist**, and neither touches a content grid — the grids stay `auto-fit`. Do not add a third without a reason as concrete as these:
   1. `max-width: 900px` — the seven-item nav wraps to three rows on a phone and eats ~60% of the viewport, so it collapses behind a `תפריט` toggle (see §6). The header's primary CTA is hidden here; the hero already carries it.
   2. `max-width: 760px` — two things that are genuinely format-dependent, not just narrower: `--scrim-hero` is a *sideways* gradient with no horizontal room left on a phone, so the hero swaps to a bottom-anchored scrim and bottom-aligns its text; and the vertical video and the trust band trade places (see §6).
+  3. `max-width: 560px` — at 360px the logo, the `תפריט` toggle and the cart do not fit one row, and a header that wraps to two rows eats the top of a phone screen. The cart drops to its short label and the logo to 40px, which brings the header back to a single 64px row.
+
+**On the phone the scrim must stay off the photograph.** The bottom-anchored hero scrim runs `.88 → .74 (26%) → .40 (58%) → .12 (100%)`: heavy enough under the text, which occupies the bottom ~44%, and nearly clear across the top half so the food is actually visible. Darkening it uniformly to make type easier is the wrong trade — the photograph is the reason the hero exists.
 
 | Block | min | gap |
 |---|---|---|
@@ -216,7 +219,7 @@ No scroll-triggered reveals, no parallax, no marquees.
 - **Mobile nav toggle** — a pill matching the cart (`1px --line`, `--cream-card`, 14px/700) holding a 3-bar glyph + the word `תפריט`; appears only under 900px. It drives `aria-expanded` on the button and `.open` on the `<nav>`; the open panel is a full-width column of 44px-tall rows separated by `--line` hairlines, and it closes itself when a link inside is clicked. This is the only scripted component on the page.
 - **Product card** — `--cream-card`, 1px `--line`, `--r-card`, `overflow:hidden`; **photo first**: `aspect-ratio:1/1` — always square, identical across every card in a row, cropping the source as needed via `object-fit:cover`, `--photo-bg` behind, full card width and flush to the top corners (no inset). Body below gets 18px padding and `gap:8px`: optional badge, title, one-line description, then the bottom row on `margin-top:auto` = price + `הוספה לסל`. Photo hover `opacity:.94` only — the card itself does not lift, scale or shadow.
 - **Vertical video** — a 9:16 frame, `--r-panel-lg`, `--shadow-hero`, `--ink-deep` behind, `width: min(100%, 380px)` and centred; the `<video>` fills it with `object-fit:cover`. It and the trust band occupy the same slot in the page and **swap at 760px**: the phone gets the video and no trust band, the desktop gets the trust band and no video. A vertical clip is a phone format — full-bleed on a 375px screen it is the best thing on the page, and beside a 1240px column it is a stamp. Always `playsinline` and `muted`; `controls` + `preload="none"` while the file is heavy, switching to `autoplay loop` (still muted, still `playsinline`) only once it is under ~4MB. Give it a real `poster` — a frame from the clip itself, never an unrelated product shot — and an `aria-label` describing the clip.
-- **Cart** — pill in the header with a cocoa count bubble; reveals a bar under the header showing item count and `סה״כ ₪X`. Empty: `העגלה ריקה — הוסיפו מאפה טרי`. Count text pluralizes (`פריט אחד בעגלה` / `N פריטים בעגלה`).
+- **Cart** — pill in the header with a cocoa count bubble. It carries two labels, `עגלת קניות` and a short `סל`, and swaps to the short one under 560px so the header stays on one row; the `aria-label` keeps the full name for screen readers either way. It reveals a bar under the header showing item count and `סה״כ ₪X`. Empty: `העגלה ריקה — הוסיפו מאפה טרי`. Count text pluralizes (`פריט אחד בעגלה` / `N פריטים בעגלה`).
 
 ## 7. Imagery
 
