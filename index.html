@@ -111,9 +111,10 @@ p{margin:0}
 .hero-c{max-width:640px;animation:riseIn .7s ease both}
 .hero h1{color:var(--on-dark);font-weight:900;letter-spacing:-.02em;line-height:.98;
   font-size:clamp(40px,6.4vw,78px);margin-bottom:20px}
+.hero-brand{display:block;font-weight:300;letter-spacing:.02em;line-height:1.3;
+  font-size:clamp(21px,2.7vw,32px);color:var(--on-dark-mute);margin-bottom:16px}
 .hero-sub{color:var(--on-dark-mute);font:500 clamp(19px,2.2vw,26px)/1.3 var(--font-sans);
-  max-width:34ch;margin-bottom:34px}
-.hero-cta{display:flex;flex-wrap:wrap;gap:14px}
+  max-width:34ch}
 /* narrow screens: the sideways scrim has no room, so bed the text from the bottom */
 @media (max-width:760px){
   .hero{--scrim-hero:linear-gradient(to top, rgba(40,24,15,.94) 0%, rgba(40,24,15,.84) 38%,
@@ -265,12 +266,8 @@ p{margin:0}
          alt="שולחן אירוח של אלה פטיסרי עמוס בקישים, סלטים וכריכים טריים" fetchpriority="high">
     <div class="wrap hero-in">
       <div class="hero-c">
-        <h1>מאפים. לחמים.<br>עוגות.</h1>
+        <h1><span class="hero-brand">אלה בית קפה ופטיסרי</span>מאפים. לחמים.<br>עוגות.</h1>
         <p class="hero-sub">טרי. כשר. מוכן במקום — כל בוקר מחדש.</p>
-        <div class="hero-cta">
-          <a class="btn" href="#shop">להזמנה מהחנות</a>
-          <a class="btn btn-on-dark-o" href="#cats">מגשי אירוח</a>
-        </div>
       </div>
     </div>
   </section>

@@ -17,7 +17,8 @@ Non-negotiables:
 - **Cards get a 1px border, never a shadow.** Only two shadows exist in the whole system (§4).
 - **Gradients exist only as photo scrims** — two of them: `--scrim-hero` (hero) and `--scrim` (photo-tile captions). Nothing else in the system gradients.
 - **Headlines are weight 900 with negative tracking.** Never 600/700 for a section heading.
-- **A section heading stands alone.** No kicker, eyebrow, or small label above it — the H2 (or the hero H1) is the first thing in the block. Break it across lines with explicit `<br>` where the meaning breaks, and let scale alone carry the hierarchy.
+- **A section heading stands alone.** No kicker, eyebrow, or small label above it — the H2 is the first thing in the block. Break it across lines with explicit `<br>` where the meaning breaks, and let scale alone carry the hierarchy.
+- **The hero H1 is the one exception, and only because the brand line lives *inside* it.** `אלה בית קפה ופטיסרי` is set in weight 300 as a `<span>` on the first line of the H1, with the 900 tagline under it — one heading, two weights. That is a change of weight within a title, not a label stacked above one; a separate `<p>` above the H1 would be the banned pattern.
 - **The hero is a full-bleed photograph with the headline set over it** — not a two-column text/photo split. It is the one place the page goes edge-to-edge.
 - Arch photo crops are the identity. They survive in the about section only — exactly the two defined radii, nowhere else.
 - **Product cards lead with the product photo.** A card without a real photograph is not shippable.
@@ -48,7 +49,7 @@ Explicitly banned (these are what make a bakery site look generic):
 --font-sans: Heebo, "Helvetica Neue", Arial, sans-serif;
 ```
 
-Weights in use: `400` body, `500` nav + hero sub-line, `700` card titles + buttons, `900` headlines + prices. `300` is available for large quiet paragraphs but unused so far. Never use `600` (Heebo has it; the system doesn't).
+Weights in use: `300` the hero brand line, `400` body, `500` nav + hero sub-line, `700` card titles + buttons, `900` headlines + prices. `300` is reserved for that one delicate line — do not spend it on body copy. Never use `600` (Heebo has it; the system doesn't).
 
 ### Type scale
 
@@ -57,6 +58,7 @@ Weights in use: `400` body, `500` nav + hero sub-line, `700` card titles + butto
 | Hero H1 | `clamp(40px, 6.4vw, 78px)` | 900 | `-0.02em` | `0.98` |
 | Section H2 | `clamp(28px, 3.6vw, 46px)` | 900 | `-0.015em` | `1.1` |
 | Dark-block H2 | `clamp(28px, 4vw, 52px)` | 900 | `-0.02em` | `1.1` |
+| Hero brand line (inside H1) | `clamp(21px, 2.7vw, 32px)` | 300 | `0.02em` | `1.3` |
 | Hero sub-line | `clamp(19px, 2.2vw, 26px)` | 500 | — | `1.3` |
 | Card title | 19–20px | 700 | — | `1.35` |
 | Price | 22px (20px in hero card) | 900 | — | — |
@@ -210,7 +212,7 @@ No scroll-triggered reveals, no parallax, no marquees.
 - **Pill / badge** — `--sand-deep` bg + cocoa text, 12–13px/700. Cocoa fill + cream text for seasonal labels.
 - **Text link** — 15–16px/700 with `border-bottom: 1px solid #C9A87E; padding-bottom:3px`. This replaces "read more" buttons.
 - **Photo tile** — radius `--r-tile`, `--photo-bg` behind, `object-fit:cover`, caption absolutely positioned bottom over `--scrim`, 20–26px/900 in `--on-dark`.
-- **Hero** — full-bleed `<section>`, min-height `clamp(520px, 74vh, 760px)`, photo `object-fit:cover` behind `--scrim-hero` (darkest at the inline-start/right edge so the RTL text column lands on the dark side). Content is a single column capped at `640px`, aligned to the inline-start edge of the `1240px` container: H1 → one sub-line → two buttons (no label above the H1). This replaces the old two-column arch hero.
+- **Hero** — full-bleed `<section>`, min-height `clamp(520px, 74vh, 760px)`, photo `object-fit:cover` behind `--scrim-hero` (darkest at the inline-start/right edge so the RTL text column lands on the dark side). Content is a single column capped at `640px`, aligned to the inline-start edge of the `1240px` container: H1 (light brand line + heavy tagline) → one sub-line. **No buttons in the hero** — the photograph and the name carry it, and the header's `להזמנה` pill is the standing call to action. This replaces the old two-column arch hero.
 - **Mobile nav toggle** — a pill matching the cart (`1px --line`, `--cream-card`, 14px/700) holding a 3-bar glyph + the word `תפריט`; appears only under 900px. It drives `aria-expanded` on the button and `.open` on the `<nav>`; the open panel is a full-width column of 44px-tall rows separated by `--line` hairlines, and it closes itself when a link inside is clicked. This is the only scripted component on the page.
 - **Product card** — `--cream-card`, 1px `--line`, `--r-card`, `overflow:hidden`; **photo first**: `aspect-ratio:1/1` — always square, identical across every card in a row, cropping the source as needed via `object-fit:cover`, `--photo-bg` behind, full card width and flush to the top corners (no inset). Body below gets 18px padding and `gap:8px`: optional badge, title, one-line description, then the bottom row on `margin-top:auto` = price + `הוספה לסל`. Photo hover `opacity:.94` only — the card itself does not lift, scale or shadow.
 - **Vertical video** — a 9:16 frame, `--r-panel-lg`, `--shadow-hero`, `--ink-deep` behind, `width: min(100%, 380px)` and centred; the `<video>` fills it with `object-fit:cover`. It and the trust band occupy the same slot in the page and **swap at 760px**: the phone gets the video and no trust band, the desktop gets the trust band and no video. A vertical clip is a phone format — full-bleed on a 375px screen it is the best thing on the page, and beside a 1240px column it is a stamp. Always `playsinline` and `muted`; `controls` + `preload="none"` while the file is heavy, switching to `autoplay loop` (still muted, still `playsinline`) only once it is under ~4MB. Give it a real `poster` — a frame from the clip itself, never an unrelated product shot — and an `aria-label` describing the clip.
