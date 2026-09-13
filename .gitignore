@@ -4,3 +4,6 @@
 # Pending decision — the pale-blue trial (#B8D9E2). Kept local until it is
 # accepted or dropped; see "Open experiment" in DESIGN.md.
 index-blue.html
+
+# Reviews section, held back until real quotes arrive (see DESIGN.md 1a)
+reviews.part.html

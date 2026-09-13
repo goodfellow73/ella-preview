@@ -127,6 +127,10 @@ p{margin:0}
 .hero{position:relative;min-height:clamp(520px,74vh,760px);display:grid;
   align-items:center;background:var(--ink-deep);isolation:isolate}
 .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+/* HERO VIDEO TRIAL — the photo stays underneath as poster and fallback; the
+   clip only appears once it is actually playing, so there is never a blank frame */
+.hero-vid{display:none}
+.hero-vid.on{display:block}
 .hero::after{content:"";position:absolute;inset:0;background:var(--scrim-hero);z-index:-1}
 .hero-in{padding-block:96px;width:100%}
 .hero-c{max-width:640px;animation:riseIn .7s ease both}
@@ -210,6 +214,30 @@ p{margin:0}
   flex-wrap:wrap;margin-top:auto;padding-top:10px}
 .price{font:900 22px/1 var(--font-sans);color:var(--cocoa)}
 .more{margin-top:44px;display:flex;justify-content:center}
+
+/* ===== selected testimonials + the real Google rating ===== */
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:20px}
+.quote{display:flex;flex-direction:column;gap:14px;background:var(--cream-card);
+  border:1px solid var(--line);border-radius:var(--r-card);padding:26px 24px;margin:0}
+.quote blockquote{margin:0;font:400 17px/1.7 var(--font-sans);color:var(--ink-soft)}
+.quote figcaption{margin-top:auto;font:700 14px/1.5 var(--font-sans);color:var(--cocoa)}
+.quote figcaption span{display:block;font-weight:400;color:var(--ink-mute);margin-top:2px}
+.stars{display:inline-flex;gap:2px;color:var(--cocoa);font-size:15px;letter-spacing:2px}
+
+/* the honest part: overall score, unfiltered, straight through to Google */
+.grating{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 16px;
+  margin-top:32px;padding:18px 26px;background:var(--cream-card);border:1px solid var(--line);
+  border-radius:var(--r-pill);color:var(--ink-soft);font-size:15px;text-align:center}
+.grating:hover{background:var(--sand);color:var(--ink-soft)}
+.grating b{font:900 26px/1 var(--font-sans);color:var(--cocoa)}
+.grating .stars{font-size:17px}
+.grating u{text-decoration:none;font-weight:700;color:var(--cocoa);
+  border-bottom:1px solid #C9A87E;padding-bottom:2px}
+
+/* placeholder styling — deliberately ugly so it can never ship by accident */
+.todo{font-family:ui-monospace,Consolas,monospace;font-size:13px;color:#8a5a2b;
+  background:repeating-linear-gradient(135deg,#F6E6CE,#F6E6CE 8px,#EFDCC0 8px,#EFDCC0 16px);
+  padding:2px 6px;border-radius:4px}
 
 /* ===== dark feature block ===== */
 .feat{background:var(--ink-deep);color:var(--on-dark-mute)}
@@ -304,6 +332,8 @@ p{margin:0}
   <section class="hero">
     <img class="hero-img" src="https://www.ella-patisserie.co.il/wp-content/uploads/2026/08/B-25-scaled.jpg"
          alt="שולחן אירוח של אלה פטיסרי עמוס בקישים, סלטים וכריכים טריים" fetchpriority="high">
+    <video class="hero-img hero-vid" muted loop playsinline preload="none"
+           poster="https://www.ella-patisserie.co.il/wp-content/uploads/2026/08/B-25-scaled.jpg" data-src="hero-video.mp4" aria-hidden="true"></video>
     <div class="wrap hero-in">
       <div class="hero-c">
         <h1><span class="hero-brand">אלה בית קפה ופטיסרי</span>מאפים. לחמים.<br>עוגות.</h1>
@@ -330,7 +360,7 @@ p{margin:0}
       </div>
       <div class="trust">
         <div><b>נאפה במקום</b><i>כל בוקר, מהתנור שלנו לדלפק</i></div>
-        <div><b>המקום כשר</b><i>חלבי, בהשגחה</i></div>
+        <div><b>המקום כשר</b><i>חלבי, בהשגחת המועצה הדתית עמק חפר</i></div>
         <div><b>מגשי אירוח</b><i>למשרדים, חברות ואירועים</i></div>
         <div><b>10 שנים</b><i>בפארק תעשיות עמק חפר</i></div>
       </div>
@@ -511,6 +541,7 @@ p{margin:0}
     </div>
   </section>
 
+
   <section class="sec" id="about">
     <div class="wrap about">
       <div class="about-ph">
@@ -589,6 +620,28 @@ p{margin:0}
         });
       }, { threshold: 0.35 }).observe(vid);
     }
+
+    // Hero clip, all widths. It fills the same box as the photo (.hero-img), so
+    // the crop and scrim are identical. The source is attached here, not in the
+    // markup, so reduced-motion visitors never download it; it pauses off screen,
+    // and if a phone refuses autoplay (e.g. Low Power Mode) the photo just stays.
+    var hv = document.querySelector('.hero-vid');
+    function startHero() {
+      if (!hv || hv.getAttribute('src') || calm.matches) { return; }
+      hv.src = hv.getAttribute('data-src');
+      hv.addEventListener('playing', function () { hv.classList.add('on'); }, { once: true });
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { var q = hv.play(); if (q && q.catch) { q.catch(function () {}); } }
+            else if (!hv.paused) { hv.pause(); }
+          });
+        }, { threshold: 0.1 }).observe(hv.parentNode);
+      } else {
+        hv.play();
+      }
+    }
+    startHero();
 
     nav.addEventListener('click', function (e) {
       if (e.target.tagName === 'A') {
